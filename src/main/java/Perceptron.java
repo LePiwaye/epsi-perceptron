@@ -4,13 +4,37 @@ import java.io.InputStreamReader;
 
 class Perceptron {
 
+    /**
+     * Tableau de neurones du perceptron
+     */
     private Neuron[] neurons;
+
+    /**
+     * Taux d'apprentissage du perceptron
+     */
     private double tau;
+
+    /**
+     * Nombre de runs d'apprentissage du perceptron
+     */
     private int trainingRuns;
 
+    /**
+     * Tableau de stockage des données d'entrée
+     */
     private int[][] inputSet;
+
+    /**
+     * Tableau de stockage des données de sortie
+     */
     private int[][] outputSet;
 
+    /**
+     * Constructeur du perceptron
+     * @param neuronNumber
+     * @param tau
+     * @param trainingRuns
+     */
     Perceptron(int neuronNumber, double tau, int trainingRuns){
 
         this.neurons = new Neuron[neuronNumber];
@@ -53,12 +77,20 @@ class Perceptron {
         }
     }
 
+    /**
+     * Méthode de paramétrage des données d'entrée et de sortie de chaque neurone
+     * @param inputSetRack Une ligne de données entrantes correspondant à un nombre
+     * @param outputSetRack La ligne de bits correspondant au nombre de la ligne de données entrantes
+     */
     void feedNeurons(int[] inputSetRack, int[] outputSetRack){
         for(int i = 0; i < this.neurons.length; i++){
             this.neurons[i].feedNewData(inputSetRack, outputSetRack[i]);
         }
     }
 
+    /**
+     * Méthode d'appel d'entraînement du neurone
+     */
     private void trainNeurons(){
         for(int i = 0; i < this.neurons.length; i++){
             this.neurons[i].aggregationSomme();
@@ -67,6 +99,11 @@ class Perceptron {
         }
     }
 
+    /**
+     * Appel au perceptron pour déterminer un nombre par rapport aux données d'entrée
+     * Le calcul du nouveau poids est conservé pour réaliser un apprentissage continu
+     * @return Le résultat par rapport aux données d'entrée
+     */
     double getLastRunResult(){
         double result = 0;
         int multiplicator = 1;
@@ -82,6 +119,9 @@ class Perceptron {
         return result;
     }
 
+    /**
+     * Méthode de discussion avec l'utilisateur
+     */
     void runPlaying(){
         System.out.println("==================================================");
         System.out.println("|           PERCEPTRON - FIND A NUMBER           |");
