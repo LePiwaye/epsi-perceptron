@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Perceptron {
+class Perceptron {
 
     private Neuron[] neurons;
     private double tau;
@@ -11,7 +11,7 @@ public class Perceptron {
     private int[][] inputSet;
     private int[][] outputSet;
 
-    public Perceptron(int neuronNumber, double tau, int trainingRuns){
+    Perceptron(int neuronNumber, double tau, int trainingRuns){
 
         this.neurons = new Neuron[neuronNumber];
         this.trainingRuns = trainingRuns;
@@ -26,13 +26,16 @@ public class Perceptron {
                         {1,0,1,1,0,1,1,1,1,0,0,1,0,0,1},
                         {1,1,1,1,0,0,1,1,1,0,0,1,1,1,1},
                         {1,1,1,1,0,0,1,1,1,1,0,1,1,1,1},
-                        {1,1,1,0,0,1,0,0,1,0,0,1,0,1,1}
+                        {1,1,1,0,0,1,0,0,1,0,0,1,0,1,1},
+                        {1,1,1,1,0,1,1,1,1,1,0,1,1,1,1},
+                        {1,1,1,1,0,1,1,1,1,0,0,1,1,1,1}
                 };
 
         this.outputSet = new int[][]
                 {
-                        {0,0,0},{0,0,1},{0,1,0},{0,1,1},
-                        {1,0,0},{1,0,1},{1,1,0},{1,1,1}
+                        {0,0,0,0},{0,0,0,1},{0,0,1,0},{0,0,1,1},
+                        {0,1,0,0},{0,1,0,1},{0,1,1,0},{0,1,1,1},
+                        {1,0,0,0},{1,0,0,1}
                 };
 
 
@@ -41,18 +44,16 @@ public class Perceptron {
         }
     }
 
-    public void runTraining(){
+    void runTraining(){
         for(int currentTrainingRun = 1; currentTrainingRun <= this.trainingRuns; currentTrainingRun++){
-            for(int currentNumber = 0; currentNumber < 8; currentNumber++){
+            for(int currentNumber = 0; currentNumber < this.inputSet.length; currentNumber++){
                 this.feedNeurons(this.inputSet[currentNumber], this.outputSet[currentNumber]);
                 this.trainNeurons();
             }
         }
-
-        int b = 0;
     }
 
-    private void feedNeurons(int[] inputSetRack, int[] outputSetRack){
+    void feedNeurons(int[] inputSetRack, int[] outputSetRack){
         for(int i = 0; i < this.neurons.length; i++){
             this.neurons[i].feedNewData(inputSetRack, outputSetRack[i]);
         }
@@ -66,7 +67,7 @@ public class Perceptron {
         }
     }
 
-    private double getLastRunResult(){
+    double getLastRunResult(){
         double result = 0;
         int multiplicator = 1;
         for(int i = this.neurons.length - 1; i >= 0 ; i--){
@@ -81,7 +82,7 @@ public class Perceptron {
         return result;
     }
 
-    public void runPlaying(){
+    void runPlaying(){
         System.out.println("==================================================");
         System.out.println("|           PERCEPTRON - FIND A NUMBER           |");
         System.out.println("==================================================");
@@ -90,7 +91,7 @@ public class Perceptron {
 
 
         System.out.println("Please enter a number, and I'll find it ! ");
-        System.out.println("(Note that entering anything that isn't a number between 0 and 7 will quit the program)");
+        System.out.println("(Note that entering anything that isn't a number between 0 and 9 will quit the program)");
         try {
 
             String userInput = "0";
@@ -98,7 +99,8 @@ public class Perceptron {
             while(userInput.equals("0") || userInput.equals("1") ||
                     userInput.equals("2") || userInput.equals("3") ||
                     userInput.equals("4") || userInput.equals("5") ||
-                    userInput.equals("6") || userInput.equals("7") ){
+                    userInput.equals("6") || userInput.equals("7") ||
+                    userInput.equals("8") || userInput.equals("9")){
 
                 userInput = inputReader.readLine();
                 int userNumber = Integer.parseInt(userInput);
@@ -111,5 +113,13 @@ public class Perceptron {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    int[][] getInputSet() {
+        return inputSet;
+    }
+
+    int[][] getOutputSet() {
+        return outputSet;
     }
 }
